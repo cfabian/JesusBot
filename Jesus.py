@@ -49,7 +49,7 @@ async def on_ready():
     else:
         await bot.change_presence (game = discord.Game (name = "with mankind"))
         getCat()
-        await bot.send_file(message.channel, "images/cat.jpg")
+        await bot.send_file(discord.Object(id = "298873991723089920"), "images/cat.jpg")
     
 @bot.event
 async def on_message(message):
