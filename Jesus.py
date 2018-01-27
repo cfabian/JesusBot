@@ -7,59 +7,28 @@ from datetime import datetime
 import urllib
 from urllib import request
 
-from lists import *
+# from lists import *
+from fileHandler import *
+from imageHandler import *
 
 postCount = 0
 postCountEnd = randint(1, 9)
 
-dankIndex = 45000
-
 bot = commands.Bot(command_prefix = "", description = "")
 
-def getCat():
-    url = "http://random.cat/meow"
-    req = urllib.request.Request(url)
-    with urllib.request.urlopen(req) as response:
-        page = response.read().decode('utf-8')
-        image = page[9 : -2].replace("\\", "")
-        urllib.request.urlretrieve(image, "images/cat.jpg")
-        
-def getDog():
-    url = "https://random.dog"
-    req = urllib.request.Request(url)
-    with urllib.request.urlopen(req) as response:
-        page = response.read().decode('utf-8')
-        begining_index = page.find("<img id=") + 23
-        ending_index = page.find(".jpg") + 4
-        if begining_index == 22 or ending_index == 3:
-            getDog()
-        
-        else :
-            image = page[begining_index : ending_index]
-            urllib.request.urlretrieve(url + "/" + image, "images/dog.jpg")
-            
-def getdankmeme():
-    global dankIndex
-    url = "https://www.reddit.com/r/dankmemes/"
-    req = urllib.request.Request(url, headers = {'User-agent': 'Jesus'})
-    with urllib.request.urlopen(req) as response:
-        page = response.read().decode('utf-8')
-        
-        begining_index = page.find("link", dankIndex)
-        dankIndex = begining_index
-        begining_index = page.find("data-url=", dankIndex) + 10
-        dankIndex = begining_index
-        
-        ending_index = page.find("data-domain", dankIndex) - 2
-        
-        rank = page.find("data-rank", dankIndex) + 11
-        if page[rank : rank + 2] == "25":
-            dankIndex = 45000
-        
-        image = page[begining_index : ending_index]
-        extension = image[-3 : ]
-        
-        urllib.request.urlretrieve(image, "images/dankmeme.jpg")
+# Initialize the bot for the server!
+confFileName = 'test-bot.conf'
+# confFileName = 'Jesus.conf'
+conf = readConf(confFileName)
+print('Bot Id: %s' % (conf['botId']))
+loserName = conf['loserName']
+
+lists = readLists()
+greetings = tuple(lists['greetings'])
+insults = tuple(lists['insults'])
+DANK = tuple(lists['DANK'])
+cat = tuple(lists['cat'])
+dog = tuple(lists['dog'])
         
 def getLine(servername, linenum):
     with open(servername + ".log", "r") as log:
@@ -73,11 +42,13 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print("--------------")
-    #await bot.change_presence (game = discord.Game (name = "with mankind"))
-    #await bot.send_message (discord.Object (id = "298873991723089920"), "Beep Boop, I am a bot!")
-    #await bot.send_message (discord.Object (id = "298873991723089920"), "For a list of commands say '@Jesus help me'")
-    await bot.change_presence(game = discord.Game(name = "TEST"))
-    await bot.send_message(discord.Object(id = "299195204957896716"), "Beep Boop, I am a bot!\nFor a list of commands say '@Jesus help me'")
+    if bot.user.name == 'test-bot':
+        await bot.change_presence(game = discord.Game(name = "TEST"))
+        await bot.send_message(discord.Object(id = "299195204957896716"), "Beep Boop, I am a bot!\nFor a list of commands say '@Jesus help me'")
+        
+    else:
+        await bot.change_presence (game = discord.Game (name = "with mankind"))
+        await bot.send_message (discord.Object (id = "298873991723089920"), "Beep Boop, I am a bot!\nFor a list of commands say '@Jesus help me'")
     
 @bot.event
 async def on_message(message):
@@ -119,7 +90,7 @@ async def on_message(message):
             await bot.send_file(message.channel, "images/dog.jpg")
             
         elif message.content.startswith(DANK):
-            getdankmeme()
+            getDankmeme()
             await bot.send_file(message.channel, "images/dankmeme.jpg")
             
         elif message.content.startswith("timecube"):
@@ -137,7 +108,10 @@ async def on_message(message):
                     await bot.send_message(message.channel, "FUCK OFF!")
                     
                 else:
-                    await bot.send_message(message.channel, "For a cat picture say 'cat'\nFor a dog picture say 'dog'\nFor a diggity dank may may say 'dank meme'\nTo bully someone say '@Jesus bully @username'\nFor religious guidance say 'timecube'\nTo get a log dump say '@Jesus logdump number_of_messages'")
+                    await bot.send_message(message.channel, "For a cat picture say 'cat'\nFor a dog picture say 'dog'\nFor a diggity dank may may say 'dank meme'\nTo bully someone say '@Jesus bully @username'\nFor religious guidance say 'timecube'\nTo get a list of admin commands say '@Jesus --help'")
+                
+            elif m[1] == '--help':
+                await bot.send_message(message.channel, "To get a log dump say '@Jesus logdump number_of_messages'\nTo add to the list of insults say '@Jesus add insult your_insult")
                 
             elif m[1] == "bully":
                 if randint(1, 9) == 2:
@@ -170,25 +144,17 @@ async def on_message(message):
                         logs += getLine(str(message.server), i)
                         
                     await bot.send_message(message.channel, logs)
+                    
+            elif m[1] == 'add' and m[2] == 'insult':
+                lists['insults'].append(', %s' % (' '.join(m[3 : ])))
+                writeLists(lists)
+                insults = tuple(lists['insults'])
+                await bot.send_message(message.channel, "Added \"%s\" to list of insults." % (' '.join(m[3 : ])))
                         
             else:
                 await bot.send_message(message.channel, "I'm sorry " + message.author.mention + " but I am currently not smart enough to fulfill your request of:\n~" + str(message.content[len(bot_mention) + 1 : ]) + "\nHowever, I can provide you with a picture of a cat.")
                 getCat()
                 await bot.send_file(message.channel, "images/cat.jpg")
-    
-      
-      
-# Initialize the bot for the server!
-# confFileName = 'Jesus.conf'
-confFileName = 'Jesus.conf'
-print('Reading %s...' % (confFileName))
-with open(confFileName) as f:
-    conf = f.read()
-    
-line = conf[conf.find('botId') : ]
-botId = line[line.find(': ') + 3 : line.find('\n') - 2]
-print('Bot Id: %s' % (botId))
-line  = conf[conf.find('loserName') : ]
-loserName = line[line.find(': ') + 3 : line.find('\n') - 2]
-print('Loser Name: %s' % (loserName))
-bot.run(botId)
+                
+
+bot.run(conf['botId'])
