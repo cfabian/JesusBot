@@ -17,8 +17,8 @@ postCountEnd = randint(1, 9)
 bot = commands.Bot(command_prefix = "", description = "")
 
 # Initialize the bot for the server!
-confFileName = 'test-bot.conf'
-# confFileName = 'Jesus.conf'
+# confFileName = 'test-bot.conf'
+confFileName = 'Jesus.conf'
 conf = readConf(confFileName)
 print('Bot Id: %s' % (conf['botId']))
 loserName = conf['loserName']

@@ -26,8 +26,9 @@ def getDog():
             image = page[begining_index : ending_index]
             urllib.request.urlretrieve(url + "/" + image, "images/dog.jpg")
             
+dankIndex = 45000
 def getDankmeme():
-    dankIndex = 45000
+    global dankIndex
     url = "https://www.reddit.com/r/dankmemes/"
     req = urllib.request.Request(url, headers = {'User-agent': 'Jesus'})
     with urllib.request.urlopen(req) as response:
@@ -38,13 +39,14 @@ def getDankmeme():
         begining_index = page.find("data-url=", dankIndex) + 10
         dankIndex = begining_index
         
-        ending_index = page.find("data-domain", dankIndex) - 2
+        ending_index = page.find("\"", dankIndex)
         
         rank = page.find("data-rank", dankIndex) + 11
         if page[rank : rank + 2] == "25":
             dankIndex = 45000
         
         image = page[begining_index : ending_index]
+        print(image)
         extension = image[-3 : ]
         
         urllib.request.urlretrieve(image, "images/dankmeme.jpg")
