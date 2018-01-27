@@ -44,11 +44,11 @@ async def on_ready():
     print("--------------")
     if bot.user.name == 'test-bot':
         await bot.change_presence(game = discord.Game(name = "TEST"))
-        await bot.send_message(discord.Object(id = "299195204957896716"), "Beep Boop, I am a bot!\nFor a list of commands say '@Jesus help me'")
+        await bot.send_message(discord.Object(id = "299195204957896716"), "Beep Boop, I am a bot!\nhttps://github.com/cfabian/JesusBot\nFor a list of commands say '@Jesus help me'")
         
     else:
         await bot.change_presence (game = discord.Game (name = "with mankind"))
-        await bot.send_message (discord.Object (id = "298873991723089920"), "Beep Boop, I am a bot!\nFor a list of commands say '@Jesus help me'")
+        await bot.send_message (discord.Object (id = "298873991723089920"), "Beep Boop, I am a bot!\nhttps://github.com/cfabian/JesusBot\nFor a list of commands say '@Jesus help me'")
     
 @bot.event
 async def on_message(message):
