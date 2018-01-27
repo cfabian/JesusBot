@@ -48,7 +48,8 @@ async def on_ready():
         
     else:
         await bot.change_presence (game = discord.Game (name = "with mankind"))
-        await bot.send_message (discord.Object (id = "298873991723089920"), "Beep Boop, I am a bot!\nhttps://github.com/cfabian/JesusBot\nFor a list of commands say '@Jesus help me'")
+        getCat()
+        await bot.send_file(message.channel, "images/cat.jpg")
     
 @bot.event
 async def on_message(message):
@@ -108,10 +109,10 @@ async def on_message(message):
                     await bot.send_message(message.channel, "FUCK OFF!")
                     
                 else:
-                    await bot.send_message(message.channel, "For a cat picture say 'cat'\nFor a dog picture say 'dog'\nFor a diggity dank may may say 'dank meme'\nTo bully someone say '@Jesus bully @username'\nFor religious guidance say 'timecube'\nTo get a list of admin commands say '@Jesus --help'")
+                    await bot.send_message(message.channel, "For a cat picture say 'cat'\nFor a dog picture say 'dog'\nFor a diggity dank may may say 'dank meme'\nTo bully someone say '@Jesus bully @username'\nFor religious guidance say 'timecube'\nTo get a list of admin commands say '@Jesus --help'\nhttps://github.com/cfabian/JesusBot")
                 
             elif m[1] == '--help':
-                await bot.send_message(message.channel, "To get a log dump say '@Jesus logdump number_of_messages'\nTo add to the list of insults say '@Jesus add insult your_insult")
+                await bot.send_message(message.channel, "To get a log dump say '@Jesus logdump number_of_messages'\nTo add to the list of insults say '@Jesus add insult your_insult\nhttps://github.com/cfabian/JesusBot")
                 
             elif m[1] == "bully":
                 if randint(1, 9) == 2:
