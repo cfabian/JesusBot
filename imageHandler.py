@@ -46,7 +46,6 @@ def getDankmeme():
             dankIndex = 45000
         
         image = page[begining_index : ending_index]
-        print(image)
         extension = image[-3 : ]
         
         urllib.request.urlretrieve(image, "images/dankmeme.jpg")

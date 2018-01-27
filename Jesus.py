@@ -55,7 +55,7 @@ async def on_message(message):
     
     bot_mention = "<@" + bot.user.id + ">"
     
-    global postCount, postCountEnd
+    global postCount, postCountEnd, insults
     #print(message.channel)
     #print(message.author)
     #print(message.server)
