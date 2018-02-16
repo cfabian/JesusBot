@@ -12,6 +12,8 @@ dog - Posts a picture of a dog
 
 dank - Posts a meme picture
 
+bible - Posts a random bible verse
+
 @Jesus bully @username - Sends @username a mean message from @Jesus (also deletes this message from the feed)
 
 timecube - Posts a passage from http://timecube.2enp.com/
