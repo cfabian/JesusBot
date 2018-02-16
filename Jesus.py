@@ -17,8 +17,8 @@ postCountEnd = randint(1, 9)
 bot = commands.Bot(command_prefix = "", description = "")
 
 # Initialize the bot for the server!
-# confFileName = 'test-bot.conf'
-confFileName = 'Jesus.conf'
+confFileName = 'test-bot.conf'
+# confFileName = 'Jesus.conf'
 conf = readConf(confFileName)
 print('Bot Id: %s' % (conf['botId']))
 loserName = conf['loserName']
@@ -116,13 +116,13 @@ async def on_message(message):
                     await bot.send_message(message.channel, "FUCK OFF!")
                     
                 else:
-                    await bot.send_message(message.channel, "For a cat picture say 'cat'\n\
-                                                             For a dog picture say 'dog'\n\
-                                                             For a diggity dank may may say 'dank meme'\n\
-                                                             For a verse from our lord and savior say 'bible'\n\
-                                                             To bully someone say '@Jesus bully @username'\n\
-                                                             For religious guidance say 'timecube'\n\
-                                                             To get a list of admin commands say '@Jesus --help'\nhttps://github.com/cfabian/JesusBot")
+                    await bot.send_message(message.channel, "For a cat picture say 'cat'\n"
+                                                            "For a dog picture say 'dog'\n"
+                                                            "For a diggity dank may may say 'dank meme'\n"
+                                                            "For a verse from our lord and savior say 'bible'\n"
+                                                            "To bully someone say '@Jesus bully @username'\n"
+                                                            "For religious guidance say 'timecube'\n"
+                                                            "To get a list of admin commands say '@Jesus --help'\nhttps://github.com/cfabian/JesusBot")
                 
             elif m[1] == '--help':
                 await bot.send_message(message.channel, "To get a log dump say '@Jesus logdump number_of_messages'\nTo add to the list of insults say '@Jesus add insult your_insult\nhttps://github.com/cfabian/JesusBot")
