@@ -98,13 +98,20 @@ async def on_message(message):
             line = random.choice(open("timecube.txt").readlines())
             await bot.send_message(message.channel, line)
             await bot.send_message(message.channel, "http://timecube.2enp.com/")
+
+        elif message.content.startswith("bible"):
+            line = request.urlopen("http://labs.bible.org/api/?passage=random").read().decode()
+            headers = line.split("</b>");
+            headers[0] = headers[0].replace("<b>", "***") + "***"
+            await bot.send_message(message.channel, headers[0])
+            await bot.send_message(message.channel, headers[1])
             
         elif message.content.startswith(bot_mention):
             m = message.content.split()
             if len(m) == 1:
                 await bot.send_message(message.channel, "Hey gurl : )")
                 
-            elif m[1] == "help" and m[2] == "me":
+            elif m[1] == "help" and len(m) == 3 and m[2] == "me":
                 if randint(1, 9) == 7:
                     await bot.send_message(message.channel, "FUCK OFF!")
                     
