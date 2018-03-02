@@ -44,7 +44,7 @@ async def on_ready():
     print("--------------")
     if bot.user.name == 'test-bot':
         await bot.change_presence(game = discord.Game(name = "TEST"))
-        await bot.send_message(discord.Object(id = "299195204957896716"), "Beep Boop, I am a bot!\nhttps://github.com/cfabian/JesusBot\nFor a list of commands say '@Jesus help me'")
+        await bot.send_message(discord.Object(id = "299195204957896716"), "Beep Boop, I am a bot!\nhttps://github.com/cfabian/JesusBot\nFor a list of commands say '@test-bot help me'")
         
     else:
         await bot.change_presence (game = discord.Game (name = "with mankind"))
@@ -62,7 +62,7 @@ async def on_message(message):
     #print(message.server)
     #print(str(message.attachments))
     
-    if str(message.author) != bot.user:
+    if str(message.author.id) != bot.user.id:
         with open(str (message.server) + ".log", "a") as log:
             log.write((str(message.timestamp) + ",").ljust(30) + (str(message.author) + ",").ljust(20) + (str(message.channel) + ",").ljust(20))
             if message.attachments:
