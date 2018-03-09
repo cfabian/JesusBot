@@ -27,17 +27,28 @@ def getDog():
             urllib.request.urlretrieve(url + "/" + image, "images/dog.jpg")
             
 redditIndex = 45000
-def getRedditImage(subreddit):
+def getRedditImage(subreddit, nsfw):
     global redditIndex
     # url = "https://www.reddit.com/r/dankmemes/"
     # url = "https://www.reddit.com/r/corgis/"
     url = 'https://www.reddit.com/r/' + subreddit + '/'
-    req = urllib.request.Request(url, headers = {'User-agent': 'Jesus'})
+    if nsfw:
+        req = urllib.request.Request(url, headers = {'User-agent': 'Jesus', 'cookie': 'over18=1'})
+        
+    else:
+        req = urllib.request.Request(url, headers = {'User-agent': 'Jesus'})
+        
     extension = ''
     with urllib.request.urlopen(req) as response:
+        if response.url[ : 35] == 'https://www.reddit.com/over18?dest=':
+            return 0
+            
         page = response.read().decode('utf-8')
+        badCount = 0
         
         while(extension != 'jpg' and extension != 'png'):
+            if badCount > 20:
+                return -1
             
             begining_index = page.find("link", redditIndex)
             redditIndex = begining_index
@@ -52,5 +63,7 @@ def getRedditImage(subreddit):
             
             image = page[begining_index : ending_index]
             extension = image[-3 : ]
+            badCount += 1
         
         urllib.request.urlretrieve(image, "images/" + subreddit + ".jpg")
+        return 1

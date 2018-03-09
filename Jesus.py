@@ -14,6 +14,8 @@ from imageHandler import *
 postCount = 0
 postCountEnd = randint(1, 9)
 
+wantsNSFW = {'proceed' : False, 'subreddit' : '' }
+
 bot = commands.Bot(command_prefix = "", description = "")
 
 # Initialize the bot for the server!
@@ -56,7 +58,7 @@ async def on_message(message):
     
     bot_mention = "<@" + bot.user.id + ">"
     
-    global postCount, postCountEnd, insults
+    global postCount, postCountEnd, insults, wantsNSFW
     #print(message.channel)
     #print(message.author)
     #print(message.server)
@@ -91,7 +93,7 @@ async def on_message(message):
             await bot.send_file(message.channel, "images/dog.jpg")
             
         elif message.content.startswith(DANK):
-            getRedditImage('dankmemes')
+            getRedditImage('dankmemes', False)
             await bot.send_file(message.channel, "images/dankmemes.jpg")
             
         elif message.content.startswith("get image from subreddit "):
@@ -101,9 +103,19 @@ async def on_message(message):
                 
             elif subreddit[ : 2] == 'r/':
                 subreddit = subreddit[2 : ]
+            
+            res = getRedditImage(subreddit, False)
+            
+            if res == 1:
+                await bot.send_file(message.channel, "images/" + subreddit + ".jpg")
                 
-            getRedditImage(subreddit)
-            await bot.send_file(message.channel, "images/" + subreddit + ".jpg")
+            elif res == 0:
+                await bot.send_message(message.channel, "Whoa whoa whoa. Slow down there skid row.\nThe requested subreddit: https://www.reddit.com/r/" + subreddit + " contains NSFW material.\nIf you really, and I mean really, want to post those dick pics type '@Jesus I really do like dicks'.")
+                wantsNSFW['proceed'] = True
+                wantsNSFW['subreddit'] = subreddit
+                
+            elif res == -1:
+                await bot.send_message(message.channel, "I could not find any images on the requested subreddit:\nhttps://www.reddit.com/r/" + subreddit)
             
         elif message.content.startswith("timecube"):
             line = random.choice(open("timecube.txt").readlines())
@@ -174,6 +186,32 @@ async def on_message(message):
                         logs += getLine(str(message.server), i)
                         
                     await bot.send_message(message.channel, logs)
+                    
+            elif ' '.join(m[1 : ]) == "I really do like dicks":
+                if wantsNSFW['proceed'] == True:
+                    
+                    await bot.send_message(message.channel, "Okay kid, you asked for it.")
+                    
+                    subreddit = wantsNSFW['subreddit']
+                    res = getRedditImage(subreddit, True)
+                    
+                    wantsNSFW['proceed'] = False
+                    
+                    if res == 1:
+                        await bot.send_file(message.channel, "images/" + subreddit + ".jpg")
+                        
+                    elif res == 0:
+                        await bot.send_message(message.channel, "Whoa whoa whoa. Slow down there skid row.\nThe requested subreddit: https://www.reddit.com/r/" + subreddit + " contains NSFW material.\nIf you really, and I mean really, want to post those dick pics type '@Jesus I really do like dicks'.")
+                        wantsNSFW['proceed'] = True
+                        wantsNSFW['subreddit'] = subreddit
+                        print(wantsNSFW)
+                        
+                    elif res == -1:
+                        await bot.send_message(message.channel, "I could not find any images on the requested subreddit:\nhttps://www.reddit.com/r/" + subreddit)
+                    
+                    
+                else:
+                    await bot.send_message(message.channel, "The more power to you.")
                     
             elif m[1] == 'add' and m[2] == 'insult':
                 lists['insults'].append(', %s' % (' '.join(m[3 : ])))
