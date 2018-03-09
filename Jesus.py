@@ -133,6 +133,7 @@ async def on_message(message):
                                                             "For a verse from our lord and savior say 'bible'\n"
                                                             "To bully someone say '@Jesus bully @username'\n"
                                                             "For religious guidance say 'timecube'\n"
+                                                            "To force me to look through your favorite subreddit say 'get image from subreddit [subreddit]'\n"
                                                             "To get a list of admin commands say '@Jesus --help'\nhttps://github.com/cfabian/JesusBot")
                 
             elif m[1] == '--help':
@@ -152,12 +153,16 @@ async def on_message(message):
                 if len(m) > 2:
                     if m[2].isdigit():
                         num = int(m[2])
-                        await bot.send_message(message.channel, "Last " + str(num) + " messages:")
-                        logs = ""
-                        for i in range(num - 1, -1, -1):
-                            logs += getLine(str(message.server), i)
+                        if num > 20:
+                            await bot.send_message(message.channel, "Fuck you!\nI'm not gonna post more than 20 logged messages.")
                             
-                        await bot.send_message(message.channel, logs)
+                        else:
+                            await bot.send_message(message.channel, "Last " + str(num) + " messages:")
+                            logs = ""
+                            for i in range(num - 1, -1, -1):
+                                logs += getLine(str(message.server), i)
+                                
+                            await bot.send_message(message.channel, logs)
                         
                     else:
                         await bot.send_message(message.channel, "You're retarded! Type in a fucking number next time.")
