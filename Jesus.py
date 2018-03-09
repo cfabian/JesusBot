@@ -91,8 +91,19 @@ async def on_message(message):
             await bot.send_file(message.channel, "images/dog.jpg")
             
         elif message.content.startswith(DANK):
-            getDankmeme()
-            await bot.send_file(message.channel, "images/dankmeme.jpg")
+            getRedditImage('dankmemes')
+            await bot.send_file(message.channel, "images/dankmemes.jpg")
+            
+        elif message.content.startswith("get image from subreddit "):
+            subreddit = message.content.split()[4]
+            if subreddit[ : 3] == '/r/':
+                subreddit = subreddit[3 : ]
+                
+            elif subreddit[ : 2] == 'r/':
+                subreddit = subreddit[2 : ]
+                
+            getRedditImage(subreddit)
+            await bot.send_file(message.channel, "images/" + subreddit + ".jpg")
             
         elif message.content.startswith("timecube"):
             line = random.choice(open("timecube.txt").readlines())

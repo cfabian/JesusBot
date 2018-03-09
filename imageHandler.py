@@ -26,10 +26,12 @@ def getDog():
             image = page[begining_index : ending_index]
             urllib.request.urlretrieve(url + "/" + image, "images/dog.jpg")
             
-dankIndex = 45000
-def getDankmeme():
-    global dankIndex
-    url = "https://www.reddit.com/r/dankmemes/"
+redditIndex = 45000
+def getRedditImage(subreddit):
+    global redditIndex
+    # url = "https://www.reddit.com/r/dankmemes/"
+    # url = "https://www.reddit.com/r/corgis/"
+    url = 'https://www.reddit.com/r/' + subreddit + '/'
     req = urllib.request.Request(url, headers = {'User-agent': 'Jesus'})
     extension = ''
     with urllib.request.urlopen(req) as response:
@@ -37,18 +39,18 @@ def getDankmeme():
         
         while(extension != 'jpg' and extension != 'png'):
             
-            begining_index = page.find("link", dankIndex)
-            dankIndex = begining_index
-            begining_index = page.find("data-url=", dankIndex) + 10
-            dankIndex = begining_index
+            begining_index = page.find("link", redditIndex)
+            redditIndex = begining_index
+            begining_index = page.find("data-url=", redditIndex) + 10
+            redditIndex = begining_index
             
-            ending_index = page.find("\"", dankIndex)
+            ending_index = page.find("\"", redditIndex)
             
-            rank = page.find("data-rank", dankIndex) + 11
+            rank = page.find("data-rank", redditIndex) + 11
             if page[rank : rank + 2] == "25":
-                dankIndex = 45000
+                redditIndex = 45000
             
             image = page[begining_index : ending_index]
             extension = image[-3 : ]
         
-        urllib.request.urlretrieve(image, "images/dankmeme.jpg")
+        urllib.request.urlretrieve(image, "images/" + subreddit + ".jpg")

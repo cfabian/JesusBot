@@ -18,6 +18,8 @@ bible - Posts a random bible verse
 
 timecube - Posts a passage from http://timecube.2enp.com/
 
+get image from subreddit [subreddit] - posts a picture from the inputted subreddit
+
 ## Admin Commands
 
 @Jesus logdump [number of messages] - Post the number of logs specified (defaults to 5)
