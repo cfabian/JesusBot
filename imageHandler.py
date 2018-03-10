@@ -39,31 +39,35 @@ def getRedditImage(subreddit, nsfw):
         req = urllib.request.Request(url, headers = {'User-agent': 'Jesus'})
         
     extension = ''
-    with urllib.request.urlopen(req) as response:
-        if response.url[ : 35] == 'https://www.reddit.com/over18?dest=':
-            return 0
+    try:
+        with urllib.request.urlopen(req) as response:
+            if response.url[ : 35] == 'https://www.reddit.com/over18?dest=':
+                return 0
+                
+            page = response.read().decode('utf-8')
+            badCount = 0
             
-        page = response.read().decode('utf-8')
-        badCount = 0
-        
-        while(extension != 'jpg' and extension != 'png'):
-            if badCount > 20:
-                return -1
+            while(extension != 'jpg' and extension != 'png'):
+                if badCount > 20:
+                    return -1
+                
+                begining_index = page.find("link", redditIndex)
+                redditIndex = begining_index
+                begining_index = page.find("data-url=", redditIndex) + 10
+                redditIndex = begining_index
+                
+                ending_index = page.find("\"", redditIndex)
+                
+                rank = page.find("data-rank", redditIndex) + 11
+                if page[rank : rank + 2] == "25":
+                    redditIndex = 45000
+                
+                image = page[begining_index : ending_index]
+                extension = image[-3 : ]
+                badCount += 1
             
-            begining_index = page.find("link", redditIndex)
-            redditIndex = begining_index
-            begining_index = page.find("data-url=", redditIndex) + 10
-            redditIndex = begining_index
+            urllib.request.urlretrieve(image, "images/" + subreddit + ".jpg")
+            return 1
             
-            ending_index = page.find("\"", redditIndex)
-            
-            rank = page.find("data-rank", redditIndex) + 11
-            if page[rank : rank + 2] == "25":
-                redditIndex = 45000
-            
-            image = page[begining_index : ending_index]
-            extension = image[-3 : ]
-            badCount += 1
-        
-        urllib.request.urlretrieve(image, "images/" + subreddit + ".jpg")
-        return 1
+    except:
+        return -1
