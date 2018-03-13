@@ -85,8 +85,13 @@ async def on_message(message):
             await bot.send_message(message.channel, "Sup you goddamn degenerate")
             
         elif message.content.startswith(cat):
-            getCat()
-            await bot.send_file(message.channel, "images/cat.jpg")
+            if len(message.content.split()) > 1 and message.content.split()[1] == 'gif':
+                getCatGif()
+                await bot.send_file(message.channel, "images/cat.gif")
+                
+            else:
+                getCat()
+                await bot.send_file(message.channel, "images/cat.jpg")
             
         elif message.content.startswith(dog):
             getDog()

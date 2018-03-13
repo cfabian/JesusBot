@@ -5,12 +5,12 @@ import urllib
 from urllib import request
 
 def getCat():
-    url = "http://random.cat/meow"
-    req = urllib.request.Request(url)
-    with urllib.request.urlopen(req) as response:
-        page = response.read().decode('utf-8')
-        image = page[9 : -2].replace("\\", "")
-        urllib.request.urlretrieve(image, "images/cat.jpg")
+    url = "http://thecatapi.com/api/images/get?format=src&type=jpg"
+    req = urllib.request.urlretrieve(url, "images/cat.jpg")
+    
+def getCatGif():
+    url = "http://thecatapi.com/api/images/get?format=src&type=gif"
+    req = urllib.request.urlretrieve(url, "images/cat.gif")
         
 def getDog():
     url = "https://random.dog"
