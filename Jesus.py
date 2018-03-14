@@ -81,11 +81,11 @@ async def on_message(message):
                 await bot.send_message(message.channel, message.author.mention + " " + random.choice(insults))
             
         
-        if message.content.startswith(greetings):
+        if message.content.lower().startswith(greetings):
             await bot.send_message(message.channel, "Sup you goddamn degenerate")
             
-        elif message.content.startswith(cat):
-            if len(message.content.split()) > 1 and message.content.split()[1] == 'gif':
+        elif message.content.lower().startswith(cat):
+            if len(message.content.split()) > 1 and message.content.split()[1].lower() == 'gif':
                 getCatGif()
                 await bot.send_file(message.channel, "images/cat.gif")
                 
@@ -93,16 +93,16 @@ async def on_message(message):
                 getCat()
                 await bot.send_file(message.channel, "images/cat.jpg")
             
-        elif message.content.startswith(dog):
+        elif message.content.lower().startswith(dog):
             getDog()
             await bot.send_file(message.channel, "images/dog.jpg")
             
-        elif message.content.startswith(DANK):
+        elif message.content.lower().startswith(DANK):
             getRedditImage('dankmemes', False)
             await bot.send_file(message.channel, "images/dankmemes.jpg")
             
-        elif message.content.startswith("get image from subreddit "):
-            subreddit = message.content.split()[4]
+        elif message.content.lower().startswith("get image from subreddit "):
+            subreddit = message.content.split()[4].lower()
             if subreddit[ : 3] == '/r/':
                 subreddit = subreddit[3 : ]
                 
@@ -122,12 +122,12 @@ async def on_message(message):
             elif res == -1:
                 await bot.send_message(message.channel, "I could not find any images on the requested subreddit:\nhttps://www.reddit.com/r/" + subreddit)
             
-        elif message.content.startswith("timecube"):
+        elif message.content.lower().startswith("timecube"):
             line = random.choice(open("timecube.txt").readlines())
             await bot.send_message(message.channel, line)
             await bot.send_message(message.channel, "http://timecube.2enp.com/")
 
-        elif message.content.startswith("bible"):
+        elif message.content.lower().startswith("bible"):
             line = request.urlopen("http://labs.bible.org/api/?passage=random").read().decode()
             headers = line.split("</b>");
             headers[0] = headers[0].replace("<b>", "***") + "***"
@@ -135,7 +135,7 @@ async def on_message(message):
             await bot.send_message(message.channel, headers[1])
             
         elif message.content.startswith(bot_mention):
-            m = message.content.split()
+            m = message.content.lower().split()
             if len(m) == 1:
                 await bot.send_message(message.channel, "Hey gurl : )")
                 
